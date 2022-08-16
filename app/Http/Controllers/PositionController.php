@@ -10,11 +10,9 @@ class PositionController extends Controller
    
     public function index()
     {
-        return PositionModel::with('joinwhere','joinwhere')
+        return PositionModel::with('car_where','car_where')
                             ->orderBy('position_id')
-                            ->paginate(500);
-        /* $position = PositionModel ::paginate(500);
-        return response()->json($position); */
+                            ->paginate(300);
 
     }
 
@@ -54,14 +52,14 @@ class PositionController extends Controller
     public function search($car_where ,$car_line){
         return PositionModel::where("car_where", "like", "%" . $car_where ."%")
                             ->where("car_line", "like", "%" . $car_line ."%")
-                            ->with('joinwhere','joinwhere')
+                            ->with('car_where','car_where')
                             ->orderBy('position_id','ASC')
                             ->paginate(500);
     }
     public function searchposition($car_where ,$position_status){
         return PositionModel::where("car_where", "like", "%" . $car_where ."%")
                             ->where("position_status", "like", "%" . $position_status ."%")
-                            ->with('joinwhere','joinwhere')
+                            ->with('car_where','car_where')
                             ->orderBy('position_id','ASC')
                             ->paginate(500);
     }

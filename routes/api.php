@@ -22,10 +22,7 @@ Route::post("register",[\App\Http\Controllers\AuthController::class,'register'])
     Route::get("user",[\App\Http\Controllers\AuthController::class,'index']);
     
 
-    //car
-    Route::resource('car', CarController::class);
-    Route::get("car/search/{car_chassis}",[\App\Http\Controllers\CarController::class,'search']);
-    Route::get("car/name/{fullname}",[\App\Http\Controllers\CarController::class,'searchname']);
+    
 
     
     // STATUS
@@ -38,24 +35,26 @@ Route::post("register",[\App\Http\Controllers\AuthController::class,'register'])
     
    // WHERE
     Route::resource('where', WhereController::class);
-    Route::resource('req', RequestController::class); 
-   
-    // req
     
+   // req
+    Route::resource('req', RequestController::class); 
+    Route::get("req/status/{req}",[\App\Http\Controllers\RequestController::class,'searchstatus']);
     Route::get("req/search/{c_chassis}",[\App\Http\Controllers\RequestController::class,'search']);
-    Route::get("req/id/{car_id}",[\App\Http\Controllers\RequestController::class,'search2']);
 
     
     // POSITION
     Route::get("position/id/{id}",[\App\Http\Controllers\PositionController::class,'show']);
     Route::get("position/search/{car_where}/{car_line}",[\App\Http\Controllers\PositionController::class,'search']);
     Route::get("position/status/{car_where}/{position_status}",[\App\Http\Controllers\PositionController::class,'searchposition']);
-    //  Route::get("position/stock/{car_where}",[\App\Http\Controllers\PositionController::class,'searchposition']);
     Route::resource('position', PositionController::class);
+
     });
     
+    //car
+    Route::resource('car', CarController::class);
+    Route::get("car/search/{car_chassis}",[\App\Http\Controllers\CarController::class,'search']);
+    Route::get("car/name/{fullname}",[\App\Http\Controllers\CarController::class,'searchname']);
 
-    
 
 
     

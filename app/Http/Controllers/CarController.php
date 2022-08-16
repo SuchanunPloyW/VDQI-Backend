@@ -12,7 +12,10 @@ class CarController extends Controller
     public function index()
     {
         //return CarModel::orderBy('car_id', 'desc')->paginate(25);
-        return CarModel::with('users','users')->orderBy('car_id', 'desc')->paginate(25);
+        return CarModel::with('car_where', 'car_where')
+            ->with('car_status', 'car_status')
+            ->orderBy('car_id', 'desc')
+            ->paginate(25);
         /*  $carmodel =CarModel::all();
         return response()->json($carmodel); */
     }
@@ -56,7 +59,11 @@ class CarController extends Controller
 
     public function search($car_chassis)
     {
-        return CarModel::where("car_chassis", "like", "%" . $car_chassis . "%")->orderBy('car_id', 'desc')->paginate(25);
+        return CarModel::where("car_chassis", "like", "%" . $car_chassis . "%")
+                      ->with('car_where','car_where')
+                      ->with('car_status','car_status')
+                      ->orderBy('car_id', 'desc')
+                      ->paginate(25);
     }
 
     public function searchname($fullname)

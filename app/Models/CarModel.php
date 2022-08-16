@@ -15,7 +15,13 @@ class CarModel extends Model
     public $timestamps = false; // no timestamps
     use HasFactory;
 
-    public function users(){
-        return $this->belongsTo('App\Models\User');
+    public function car_where(){
+        return $this->belongsTo('App\Models\WhereModel','car_where')
+                    ->select(['where_id','car_where']); 
     }
+    public function car_status(){
+        return $this->belongsTo('App\Models\StatusModel','car_status')
+                    ->select(['status_id','car_status']); 
+    }
+    
 }

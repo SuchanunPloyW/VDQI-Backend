@@ -17,16 +17,15 @@ class RequestModel extends Model
 
     public function car_where(){
         return $this->belongsTo('App\Models\WhereModel','car_where')
-                   
                     ->select(['where_id','car_where']); 
     }
     public function car_station(){
         return $this->belongsTo('App\Models\StationModel','car_station')
                     ->select(['station_id','car_station']); 
     }
-    public function status(){
-        return $this->belongsTo('App\Models\StatusModel','status')
-                    ->select(['status_id','status']); 
+    public function car_status(){
+        return $this->belongsTo('App\Models\StatusModel','car_status')
+                    ->select(['status_id','car_status']); 
     }
 
 

@@ -12,7 +12,7 @@ class RequestController extends Controller
     {
         return RequestModel::with('car_where','car_where')
                             ->with('car_station','car_station')
-                            ->with('status','status')
+                            ->with('car_status','car_status')
                            ->orderBy('req_id')
                            ->paginate(25);
     }                      
@@ -63,10 +63,15 @@ class RequestController extends Controller
     
     public function search($car_chassis)
     {
-        return RequestModel::where("car_chassis", "like", "%" . $car_chassis . "%")->paginate(25);;
+        return RequestModel::where("car_chassis", "like", "%" . $car_chassis . "%")->paginate(25);
     }
-    public function search2($car_id)
+    public function searchstatus($car_status)
     {
-        return RequestModel::where("car_id", "like", "%" . $car_id . "%")->paginate(25);;
+        return RequestModel::where("car_status", "like", "%" . $car_status . "%")
+                            ->with('car_where','car_where')
+                            ->with('car_station','car_station')
+                            ->with('car_status','car_status')
+                            ->orderBy('req_id','ASC')
+                            ->paginate(25);
     }
 }

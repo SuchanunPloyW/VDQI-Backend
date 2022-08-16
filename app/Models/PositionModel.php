@@ -18,7 +18,7 @@ class PositionModel extends Model
         return $this->hasOne(Where::class,'where_id','car_where');
 
     } */
-    public function joinwhere(){
+    public function car_where(){
         return $this->belongsTo('App\Models\WhereModel','car_where')
                     ->select(['where_id','car_where']); 
     }
