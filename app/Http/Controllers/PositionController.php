@@ -63,7 +63,7 @@ class PositionController extends Controller
                             ->orderBy('position_id','ASC')
                             ->paginate(500);
     }
-
+ 
 
 
     /* public function search($position_status)

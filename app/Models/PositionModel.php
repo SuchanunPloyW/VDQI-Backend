@@ -22,5 +22,6 @@ class PositionModel extends Model
         return $this->belongsTo('App\Models\WhereModel','car_where')
                     ->select(['where_id','car_where']); 
     }
+    
    
 }

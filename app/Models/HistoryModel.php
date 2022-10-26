@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-
-class CarModel extends Model
+class HistoryModel extends Model
 {
-    protected $primaryKey = 'car_id'; //ตัวชี้ column
-    protected $table = 'car';     //ตัวชี้table
-    protected $guarded = ['car_id'];  //post
-    public $timestamps = false; // no timestamps
+    protected $primaryKey = 'his_id'; //ตัวชี้ column
+    protected $table = 'history_db';     //ตัวชี้table
+    protected $guarded = ['his_id'];  //post
+    public $timestamps = false;
     use HasFactory;
 
     public function car_where(){
@@ -23,6 +21,5 @@ class CarModel extends Model
         return $this->belongsTo('App\Models\StatusModel','car_status')
                     ->select(['status_id','car_status']); 
     }
-    
     
 }

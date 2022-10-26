@@ -15,7 +15,7 @@ class CarController extends Controller
         return CarModel::with('car_where', 'car_where')
             ->with('car_status', 'car_status')
             ->orderBy('car_id', 'desc')
-            ->paginate(25);
+            ->paginate(100);
         /*  $carmodel =CarModel::all();
         return response()->json($carmodel); */
     }
@@ -31,6 +31,7 @@ class CarController extends Controller
             'lastname' => 'required|string',
             'date' => 'required',
             'time' => 'required',
+            'sort' => 'required',
         ]);
         return CarModel::create($request->all());
     }
@@ -43,8 +44,10 @@ class CarController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'car_where' => 'required|string',
             'car_position' => 'required|string',
+            'car_where' => 'required|string',
+            'car_line' => 'required|string',
+            'car_status' => 'required|string',
         ]);
         $carmodel = CarModel::find($id);
         $carmodel->update($request->all());
@@ -60,14 +63,48 @@ class CarController extends Controller
     public function search($car_chassis)
     {
         return CarModel::where("car_chassis", "like", "%" . $car_chassis . "%")
-                      ->with('car_where','car_where')
-                      ->with('car_status','car_status')
-                      ->orderBy('car_id', 'desc')
-                      ->paginate(25);
+            ->with('car_where', 'car_where')
+            ->with('car_status', 'car_status')
+            ->orderBy('car_id', 'desc')
+            ->paginate(100);
     }
+
+    public function status($car_status)
+    {
+        return CarModel::where("car_status", "like", "%" . $car_status . "%")
+            /*  ->where("car_chassis", "like", "%" . $car_chassis . "%") */
+            ->with('car_where', 'car_where')
+            ->with('car_status', 'car_status')
+            ->orderBy('car_id', 'desc')
+            ->paginate(100);
+    }
+
+    public function status_sort( $sort)
+    {
+        return CarModel::where("sort", "like", "%" . $sort . "%")
+            /*  ->where("car_chassis", "like", "%" . $car_chassis . "%") */
+            ->with('car_where', 'car_where')
+            ->with('car_status', 'car_status')
+            ->orderBy('car_id', 'desc')
+            ->paginate(100);
+    }
+
 
     public function searchname($fullname)
     {
-        return CarModel::where("fullname", "like", "%" . $fullname . "%")->get();
+        return CarModel::where("fullname", "like", "%" . $fullname . "%")
+            ->with('car_where', 'car_where')
+            ->with('car_status', 'car_status')
+            ->orderBy('car_id', 'desc')
+            ->paginate(100);
+    }
+
+    public function saveID($car_chassis)
+    {
+        return CarModel::where("car_chassis", "like", "%" . $car_chassis . "%")
+            ->with('car_where', 'car_where')
+            ->with('car_status', 'car_status')
+            ->orderBy('car_id', 'desc')
+            ->get();
     }
 }
