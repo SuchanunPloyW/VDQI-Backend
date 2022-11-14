@@ -31,6 +31,16 @@ class PositDBController extends Controller
             ->paginate(500);
     }
 
+    public function PositWhereLine($car_where, $line)
+    {
+        return  PositDBModel::where("car_where", "like", "%" . $car_where . "%")
+            ->where("line", "like", "%" . $line . "%")
+            ->with('car_where', 'car_where')
+            ->with('car_id', 'car_id')
+            ->orderBy('posit', 'ASC')
+            ->paginate(500);
+    }
+
 
     public function store(Request $request)
     {
@@ -67,7 +77,7 @@ class PositDBController extends Controller
 
     public function destroy($id)
     {
-        //
+        return PositDBModel::destroy($id);
     }
 
     public function search($car_where, $line)
@@ -79,12 +89,18 @@ class PositDBController extends Controller
             ->orderBy('sort', 'ASC')
             ->paginate(500);
     }
-    public function status($car_where, $car_status)
+    public function status( $car_status)
     {
-        return PositDBModel::where("car_where", "like", "%" . $car_where . "%")
-            ->where("car_status", "like", "%" . $car_status . "%")
+        return PositDBModel:: where("car_status", "like", "%" . $car_status . "%")
             ->with('car_where', 'car_where')
             ->with('car_id', 'car_id')
+            ->orderBy('sort', 'ASC')
+            ->paginate(500);
+    }
+
+     public function car_id($car_id)
+    {
+        return PositDBModel::where("car_id", "like", "%" . $car_id . "%")
             ->orderBy('sort', 'ASC')
             ->paginate(500);
     }

@@ -12,9 +12,13 @@ class ReqDBController extends Controller
     public function index()
     {
         return ReqDBModel::with('car_id', 'car_id')
-            ->with('car_id.car_where')
-            ->with('car_id.car_status')
-            ->paginate(300);
+
+            
+            ->with('car_id.car_where', 'car_id.car_where')
+            ->with('car_id.posit_id', 'car_id.posit_id')
+            ->with('person')
+            ->orderBy('req_id', 'desc')
+            ->paginate(100);
     }
 
 
@@ -36,10 +40,13 @@ class ReqDBController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
-        /*  $request->validate([
-            ''
-        ]); */
+        $request->validate([
+            'person' => 'required',
+
+        ]);
+        $req = ReqDBModel::find($id);
+        $req->update($request->all());
+        return response()->json($req);
     }
 
     /**
@@ -52,23 +59,26 @@ class ReqDBController extends Controller
     {
         //
     }
-    public function searchmycar($req_fullname)
+    public function searchmycar($person)
     {
-        return ReqDBModel::where("req_fullname", "like", "%" . $req_fullname . "%")
-
+        return ReqDBModel::where("person", "like", "%" . $person . "%")
             ->with('car_id', 'car_id')
-            ->with('car_id.car_where')
             ->with('car_id.car_status')
+            ->with('car_id.posit_id', 'car_id.posit_id')
+            
+            ->with('car_id.car_where', 'car_id.car_where')
+            ->with('person')
             ->orderBy('req_id', 'ASC')
             ->paginate(100);
     }
     public function search($car_id)
     {
-        return ReqDBModel::with('car_id', 'car_id')
-            ->where("car_id", "like", "%" . $car_id . "%")
-            ->with('car_id.car_where')   
-            ->with('car_id.car_status')         
-
+        return ReqDBModel::where("car_id", "like", "%" . $car_id . "%")
+            ->with('car_id', 'car_id')
+            ->with('car_id.posit_id', 'car_id.posit_id')
+            
+            ->with('car_id.car_where', 'car_id.car_where')
+            ->with('person')
             /*  ->with("car_id.car_chassis") */
             /*   ->with('car_id.car_chassis') */
             ->paginate(100);

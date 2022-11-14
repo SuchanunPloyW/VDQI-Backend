@@ -11,8 +11,14 @@ class HistoryController extends Controller
 
     public function index()
     {
-        return HistoryModel::with('car_where', 'car_where')
+
+        return HistoryModel::with('car_id', 'car_id')
+            ->with('car_where', 'car_where')
             ->with('car_status', 'car_status')
+            ->with('car_id.posit_id', 'car_id.posit_id')
+            ->with('person')
+
+
             ->paginate(300);
     }
 
@@ -20,13 +26,11 @@ class HistoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'car_chassis' => 'required',
+            'car_id' => 'required',
+            'date' => 'required',
             'car_where' => 'required',
             'car_status' => 'required',
-            'date' => 'required',
-            'time' => 'required',
-            'fullname' => 'required',
-            'lastname' => 'required',
+
         ]);
         return HistoryModel::create($request->all());
     }
@@ -37,35 +41,33 @@ class HistoryController extends Controller
         return HistoryModel::find($id);
     }
 
-    
+
     public function update(Request $request, $id)
     {
         $request->validate([
-            'car_chassis' => 'required',
-            'car_where' => 'required',
-            'car_status' => 'required',
+            'car_id' => 'required',
             'date' => 'required',
-            'time' => 'required',
-            'fullname' => 'required',
-            'lastname' => 'required',
+
         ]);
         $history = HistoryModel::find($id);
         $history->update($request->all());
         return response()->json($history);
     }
 
-  
+
     public function destroy($id)
     {
         //
     }
 
-    public function search($car_chassis)
+    public function search($car_id)
     {
-        return HistoryModel::where("car_chassis", "like", "%" . $car_chassis . "%")
-            ->with('car_where', 'car_where')
+        return HistoryModel::where("car_id", "like", "%" . $car_id . "%")
+            ->with('car_id', 'car_id')
             ->with('car_status', 'car_status')
-                
+            ->with('car_where', 'car_where')
+            ->with('car_id.posit_id', 'car_id.posit_id')
+            ->with('person')
             ->paginate(100);
     }
 }

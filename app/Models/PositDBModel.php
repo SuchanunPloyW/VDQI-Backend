@@ -23,7 +23,7 @@ class PositDBModel extends Model
                     ->select(['status_id','car_status']); 
     }
     public function car_id(){
-        return $this->belongsTo('App\Models\CarModel','car_id')
+        return $this->belongsTo('App\Models\CarDBModel','car_id')
                     ->select([
                         'car_id' ,
                         'car_chassis',]);          
