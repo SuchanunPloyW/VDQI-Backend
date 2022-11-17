@@ -15,7 +15,6 @@ class CarDBController extends Controller
             ->with('posit_id')
             ->with('person')
 
-
             ->orderBy('car_id', 'desc')
             ->paginate(100);
     }

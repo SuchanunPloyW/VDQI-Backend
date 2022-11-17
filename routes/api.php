@@ -11,8 +11,9 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\PositDBController;
 use App\Http\Controllers\ReqDBController;
 use App\Http\Controllers\HistoryController;
-use App\Http\Controllers\CarFormController;
-use App\Http\Controllers\ImgController;
+
+
+use App\Http\Controllers\EvalutionController;
 
 Route::post("login", [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post("register", [\App\Http\Controllers\AuthController::class, 'register']);
@@ -72,21 +73,26 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get("reqDB/mycar/{person}", [\App\Http\Controllers\ReqDBController::class, 'searchmycar']);
     Route::get("reqDB/search/{car_id}", [\App\Http\Controllers\ReqDBController::class, 'search']);
 
-    // CAR
-    Route::resource('cardb', CarDBController::class);
-    Route::get("cardb/search/{car_chassis}", [\App\Http\Controllers\CarDBController::class, 'search']);
-    Route::get("cardb/car/id/{car_id}", [\App\Http\Controllers\CarDBController::class, 'showid']);
-    Route::get("cardb/status/{car_status}", [\App\Http\Controllers\CarDBController::class, 'status']);
-    Route::get("cardb/sort/{sort}", [\App\Http\Controllers\CarDBController::class, 'status_sort']);
-    Route::get("cardb/name/{fullname}", [\App\Http\Controllers\CarDBController::class, 'searchname']);
-    Route::get("cardb/id/{car_id}", [\App\Http\Controllers\CarDBController::class, 'saveID']);
+
 
     // HISTORY
     Route::resource('history', HistoryController::class);
     Route::get("history/search/{car_id}", [\App\Http\Controllers\HistoryController::class, 'search']);
 });
 
-//public
-Route::resource('carform', CarFormController::class);
-Route::resource('img', ImgController::class);
-/* Route::post("carform/post",[\App\Http\Controllers\Api\CarFormController::class,'store']);  */
+
+
+
+// CAR
+Route::resource('cardb', CarDBController::class);
+Route::get("cardb/search/{car_chassis}", [\App\Http\Controllers\CarDBController::class, 'search']);
+Route::get("cardb/car/id/{car_id}", [\App\Http\Controllers\CarDBController::class, 'showid']);
+Route::get("cardb/status/{car_status}", [\App\Http\Controllers\CarDBController::class, 'status']);
+Route::get("cardb/sort/{sort}", [\App\Http\Controllers\CarDBController::class, 'status_sort']);
+Route::get("cardb/name/{fullname}", [\App\Http\Controllers\CarDBController::class, 'searchname']);
+Route::get("cardb/id/{car_id}", [\App\Http\Controllers\CarDBController::class, 'saveID']);
+
+
+
+Route::resource('evaluation', EvalutionController::class);
+Route::post("chassis", [\App\Http\Controllers\EvalutionController::class, 'chekchassis']);
