@@ -89,21 +89,32 @@ class PositDBController extends Controller
             ->orderBy('sort', 'ASC')
             ->paginate(500);
     }
-    public function status( $car_status)
+    public function status($car_status)
     {
-        return PositDBModel:: where("car_status", "like", "%" . $car_status . "%")
+        return PositDBModel::where("car_status", "like", "%" . $car_status . "%")
             ->with('car_where', 'car_where')
             ->with('car_id', 'car_id')
             ->orderBy('sort', 'ASC')
             ->paginate(500);
     }
 
-     public function car_id($car_id)
+    public function statusCheck($car_status,$car_where)
+    {
+        return PositDBModel::where("car_status", "like", "%" . $car_status . "%")
+            ->where("car_where", "like", "%" . $car_where . "%")
+            ->with('car_where', 'car_where')
+            ->with('car_id', 'car_id')
+            ->orderBy('sort', 'ASC')
+            ->paginate(500);
+    }
+
+
+
+
+    public function car_id($car_id)
     {
         return PositDBModel::where("car_id", "like", "%" . $car_id . "%")
             ->orderBy('sort', 'ASC')
             ->paginate(500);
     }
-
-    
 }

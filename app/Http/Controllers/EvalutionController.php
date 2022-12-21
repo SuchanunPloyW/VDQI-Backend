@@ -11,17 +11,17 @@ use App\Models\CarDBModel;
 class EvalutionController extends Controller
 {
 
-    /* public function index()
+    public function index()
     {
-        $evalutions = EvaluationModel::all();
+        $evalutions = EvaluationModel::paginate(1000);
         return response()->json($evalutions);
-    } */
+    }
 
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'person' => 'required',
+
             'team' => 'required',
             'car_chassis' => 'required | unique:evaluation_db',
             'branch' => 'required',
@@ -35,56 +35,51 @@ class EvalutionController extends Controller
             'topic_8' => 'required',
             'topic_9' => 'required',
             'detail' => 'required',
+            'user_id' => 'required',
         ]);
         $new_evalution = EvaluationModel::create($data);
         if ($request->has('image_path')) {
             for ($i = 0; $i < count($_FILES['image_path']['name']); $i++) {
+                /* if (!is_dir("files/" . date("Ym") . "/")) {
+                    mkdir("files/" . date("Ym") . "/");
+                } */
+                $file = $_FILES['image_path']['tmp_name'][$i];
+                $sourceProperties = getimagesize($file);
+                $filename = "vdqi_" . time()  . date('Ymd') . rand(1000, 9999) . ".jpg";
+                $folderupload = public_path('/images/VDQI');
+                /* $folderupload = public_path('/images/VDQI/' . date("Ym") . '/'); */
+                $path = $folderupload . "/" . $filename;
+                $img = Image::make($file);
+
                 switch ($_FILES['image_path']['type'][$i]) {
                     case 'image/jpeg':
-                        $file = $_FILES['image_path']['tmp_name'][$i];
-                        $sourceProperties = getimagesize($file);
-                        $filename = "vdqi_" . time()  . date('Ymd') . rand(1000, 9999) . ".jpg";
-                        $folderupload = public_path('/images/VDQI/thumbnail');
-                        $path = $folderupload . "/" . $filename;
-                        $img = Image::make($file);
                         $imageResourceId = imagecreatefromjpeg($file);
                         $targetLayer = imageResize($imageResourceId, $sourceProperties[0], $sourceProperties[1]);
                         imagejpeg($targetLayer, $path);
                         $img->save($path);
                         ImagesModel::create([
-                            'image_path' => '/images/VDQI/thumbnail' . "/" . $filename,
+                            'image_path' => url('/images/VDQI/' . $filename),
                             'evaluation_id' => $new_evalution->evaluation_id,
                         ]);
                         break;
+
                     case 'image/png':
-                        $file = $_FILES['image_path']['tmp_name'][$i];
-                        $sourceProperties = getimagesize($file);
-                        $filename = "vdqi_" . time()  . date('Ymd') . rand(1000, 9999) . ".png";
-                        $folderupload = public_path('/images/VDQI/thumbnail');
-                        $path = $folderupload . "/" . $filename;
-                        $img = Image::make($file);
                         $imageResourceId = imagecreatefrompng($file);
                         $targetLayer = imageResize($imageResourceId, $sourceProperties[0], $sourceProperties[1]);
                         imagepng($targetLayer, $path);
                         $img->save($path);
                         ImagesModel::create([
-                            'image_path' => '/images/VDQI/thumbnail' . "/" . $filename,
+                            'image_path' =>  url('/images/VDQI/' . $filename),
                             'evaluation_id' => $new_evalution->evaluation_id,
                         ]);
                         break;
                     case 'image/gif':
-                        $file = $_FILES['image_path']['tmp_name'][$i];
-                        $sourceProperties = getimagesize($file);
-                        $filename = "vdqi_" . time()  . date('Ymd') . rand(1000, 9999) . ".gif";
-                        $folderupload = public_path('/images/VDQI/thumbnail');
-                        $path = $folderupload . "/" . $filename;
-                        $img = Image::make($file);
                         $imageResourceId = imagecreatefromgif($file);
                         $targetLayer = imageResize($imageResourceId, $sourceProperties[0], $sourceProperties[1]);
                         imagegif($targetLayer, $path);
                         $img->save($path);
                         ImagesModel::create([
-                            'image_path' => '/images/VDQI/thumbnail' . "/" . $filename,
+                            'image_path' =>  url('/images/VDQI/' . $filename),
                             'evaluation_id' => $new_evalution->evaluation_id,
                         ]);
                         break;
@@ -98,7 +93,8 @@ class EvalutionController extends Controller
             'car_chassis' => 'required|string',
 
         ]);
-        $chassis = CarDBModel::where('car_chassis', $fields['car_chassis'])->get();
+        $chassis = CarDBModel::where('car_chassis', $fields['car_chassis'])
+            ->get();
         echo json_encode($chassis);
         if ($chassis->count() > 0) {
             return response()->json(['message' => 'มีเลขตัวถังนี้อยู่ในระบบแล้ว'], 201);
@@ -115,18 +111,18 @@ class EvalutionController extends Controller
 
     public function show($id)
     {
-        //
+        return EvaluationModel::find($id);
+    }
+    public function search($car_chassis)
+    {
+        $evalutions = EvaluationModel::where('car_chassis', 'like', '%' . $car_chassis . '%')->get();
+        return response()->json($evalutions);
     }
 
-
-    public function update(Request $request, $id)
+    public function date($created_at)
     {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
+        $evalutions = EvaluationModel::where('created_at', 'like', '%' . $created_at . '%')->paginate(100);
+        return response()->json($evalutions);
     }
 }
 function imageResize($imageResourceId, $width, $height)

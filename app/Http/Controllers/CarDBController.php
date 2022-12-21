@@ -14,7 +14,6 @@ class CarDBController extends Controller
             ->with('car_where', 'car_where')
             ->with('posit_id')
             ->with('person')
-
             ->orderBy('car_id', 'desc')
             ->paginate(100);
     }
@@ -23,10 +22,9 @@ class CarDBController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'car_chassis' => 'required|string|max:17',
+            'car_chassis' => 'required|string|max:17 | unique:car_db',
             'posit_id' => 'required|string',
             'car_status' => 'required|string',
-           
             'date' => 'required',
             'time' => 'required',
             'sort' => 'required',
@@ -38,13 +36,13 @@ class CarDBController extends Controller
 
     public function show($id)
     {
-        return CarDBModel::with('car_status', 'car_status') 
-        ->with('car_where', 'car_where')
-        ->with('posit_id')
-        ->find($id);
+        return CarDBModel::with('car_status', 'car_status')
+            ->with('car_where', 'car_where')
+            ->with('posit_id')
+            ->find($id);
     }
 
-     public function showid($car_id)
+    public function showid($car_id)
     {
         return CarDBModel::where("car_id", "like", "%" . $car_id . "%")
             ->with('car_status', 'car_status')
@@ -53,9 +51,9 @@ class CarDBController extends Controller
             ->with('person')
 
 
-            
+
             ->paginate(100);
-    } 
+    }
 
 
     public function update(Request $request, $id)
@@ -132,6 +130,4 @@ class CarDBController extends Controller
             ->orderBy('car_id', 'desc')
             ->get();
     }
-
-    
 }

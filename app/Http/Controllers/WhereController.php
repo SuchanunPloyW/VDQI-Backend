@@ -53,11 +53,11 @@ class WhereController extends Controller
     {
         return WhereModel::where("status", "like", "%" . $status . "%")->get();
     }
-   public function searchstatusforweb($status)
+    public function searchstatusforweb($status)
     {
         return WhereModel::where("status", "like", "%" . $status . "%")
 
-             ->orderBy('where_id', 'desc')->paginate(25);
+            ->orderBy('where_id', 'desc')->paginate(25);
     }
     public function search($status, $car_where)
     {
@@ -65,4 +65,5 @@ class WhereController extends Controller
             ->where("car_where", "like", "%" . $car_where . "%")
             ->paginate(25);
     }
+
 }
